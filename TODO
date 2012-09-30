@@ -1,0 +1,7 @@
+Verify VLC is installed (and possibly install it if not.)
+Confirm Windows works.
+Confirm Linux_64bit works.
+Confirm Darwin_32bit is not needed.
+Figure out a better way to check for a Bluray disc in Linux.
+In Linux, super-user is needed to install libaacs.so.0.
+
