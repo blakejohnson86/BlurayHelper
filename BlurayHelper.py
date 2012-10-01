@@ -104,8 +104,13 @@ print "Support files installed.  Launching VLC..."
 
 
 if CurrentOS == 'Windows':
-    BDMVDir = glob.glob(os.path.join('*:\\BDMV'))
-    BlurayDir = os.path.dirname(BDMVDir[0])
+    import wmi
+    for drive in wmi.WMI().Win32_LogicalDisk():
+        BDMVDir = os.path.isdir(drive.caption + '\\BDMV')
+        if BDMVDir == True:
+            print "Bluray disk found at drive " + drive.caption + "\\."
+            BlurayDir = drive.caption
+            break
 if CurrentOS == 'Darwin':
     BDMVDir = glob.glob('/Volumes/*/BDMV')
     BlurayDir = os.path.dirname(BDMVDir[0])
