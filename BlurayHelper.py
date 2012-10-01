@@ -25,8 +25,8 @@ libaacsLocation = {
     }
 
 KEYDBLocation = {
-    'Windows_32bit': os.path.expanduser('~/AppData/Roaming/aacs/KEYDB.cfg'),
-    'Windows_64bit': os.path.expanduser('~/AppData/Roaming/aacs/KEYDB.cfg'),
+    'Windows_32bit': os.path.expanduser('~\\AppData\\Roaming\\aacs\\KEYDB.cfg'),
+    'Windows_64bit': os.path.expanduser('~\\AppData\\Roaming\\aacs\\KEYDB.cfg'),
     'Darwin_64bit': os.path.expanduser('~/Library/Preferences/aacs/KEYDB.cfg'),
     'Linux_32bit' : os.path.expanduser('~/.config/aacs/KEYDB.cfg'),
     'Linux_64bit': os.path.expanduser('~/.config/aacs/KEYDB.cfg')
@@ -57,11 +57,11 @@ if libaacsExists == True:
 else:
     print "libaacs needs to be installed at: " + libaacsLocation[CurrentSystem]
     if raw_input('Would you like to install it? (y/n)') == "y":
-        if CurrentSystem == 'Darwin' or CurrentSystem == 'Linux':
+        if CurrentOS == 'Darwin':
             os.makedirs(os.path.dirname(libaacsLocation[CurrentSystem]))
         else:
             pass
-            
+        
         if urllib.urlretrieve(libaacsURL[CurrentSystem], libaacsLocation[CurrentSystem]):
             print "libaacs was downloaded successfully."
         else:
