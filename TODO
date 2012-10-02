@@ -1,6 +1,4 @@
 Verify VLC is installed (and possibly install it if not.)
-Confirm Windows works.
-Confirm Linux_64bit works.
-Figure out a better way to check for a Bluray disc in Linux.
+Confirm Windows (x86_64) works.
 In Linux, super-user is needed to install libaacs.so.0.
 In Windows, check that the Win32API and WMI Python add-ons are installed.

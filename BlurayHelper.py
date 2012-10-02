@@ -5,6 +5,7 @@ import os
 import urllib
 import subprocess
 import glob
+import string
 
 KEYDBURL = 'http://vlc-bluray.whoknowsmy.name/files/KEYDB.cfg'
 
@@ -44,6 +45,18 @@ VLCBinary = {
 CurrentOS = platform.system()
 CPUArch = platform.architecture()[0]
 CurrentSystem = CurrentOS + '_' + CPUArch
+
+###
+### VLC Check
+###
+print "Checking for libaacs..."
+VLCExists = os.path.isfile(VLCBinary[CurrentSystem])
+
+if VLCExists == True:
+    print "VLC was found."
+else:
+    print "VLC was not found.  Please download it from http://www.videolan.org/ before you continue."
+    exit
 
 ###
 ### libaacs verification
@@ -100,7 +113,7 @@ else:
         exit
 
 print ""
-print "Support files installed.  Launching VLC..."
+print "Support files installed.  Finding Bluray media..."
 
 
 if CurrentOS == 'Windows':
@@ -114,10 +127,22 @@ if CurrentOS == 'Windows':
 if CurrentOS == 'Darwin':
     BDMVDir = glob.glob('/Volumes/*/BDMV')
     BlurayDir = os.path.dirname(BDMVDir[0])
-if CurrentOS == 'Linux':
-    BDMVDir = glob.glob(os.path.join('/media/*/BDMV'))
-    BlurayDir = os.path.dirname(BDMVDir[0])
+if CurrentOS == 'Linux':    
+    GetDrivesCMD = 'mount | grep "sr" | awk \'{ print $3 }\''
+    GetDrivesOutput = subprocess.Popen(GetDrivesCMD, shell=True, stdout=subprocess.PIPE).communicate()[0]
+    OpticalDrives = GetDrivesOutput.split('\n')
+    
+    for drive in OpticalDrives:
+        BDMVDir = os.path.isdir(drive + '/BDMV')
+        
+        if BDMVDir == True:
+            print "Bluray disk found at mountpoint: " + drive + "/."
+            BlurayDir = drive
+            break
 else:
+    print "Unknown System: " + CurrentSystem
     exit
 
-process_one = subprocess.Popen([VLCBinary[CurrentSystem], 'bluray:///' + BlurayDir])
+print ""
+print "Launching VLC..."
+subprocess.Popen([VLCBinary[CurrentSystem], 'bluray:///' + BlurayDir])
