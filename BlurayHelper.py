@@ -5,7 +5,6 @@ import os
 import urllib
 import subprocess
 import glob
-import string
 
 KEYDBURL = 'http://vlc-bluray.whoknowsmy.name/files/KEYDB.cfg'
 
@@ -115,18 +114,25 @@ else:
 print ""
 print "Support files installed.  Finding Bluray media..."
 
+###
+### Find Bluray Media
+###
 
 if CurrentOS == 'Windows':
     import wmi
+    
     for drive in wmi.WMI().Win32_LogicalDisk():
         BDMVDir = os.path.isdir(drive.caption + '\\BDMV')
+        
         if BDMVDir == True:
             print "Bluray disk found at drive " + drive.caption + "\\."
             BlurayDir = drive.caption
             break
+        
 if CurrentOS == 'Darwin':
     BDMVDir = glob.glob('/Volumes/*/BDMV')
     BlurayDir = os.path.dirname(BDMVDir[0])
+    
 if CurrentOS == 'Linux':    
     GetDrivesCMD = 'mount | grep "sr" | awk \'{ print $3 }\''
     GetDrivesOutput = subprocess.Popen(GetDrivesCMD, shell=True, stdout=subprocess.PIPE).communicate()[0]
